@@ -1,4 +1,4 @@
-package com.example;
+package com.dependencyInjection;
 
 public class Car {
     private String model;
