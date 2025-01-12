@@ -1,4 +1,4 @@
-package com.dependencyInjection;
+package com.springcore.dependencyInjection;
 
 public class Car {
     private String model;

@@ -1,4 +1,4 @@
-package com.constructorInjection;
+package com.springcore.constructorInjection;
 
 public class Certi {
     String name;

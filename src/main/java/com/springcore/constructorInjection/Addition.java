@@ -1,4 +1,4 @@
-package com.constructorInjection;
+package com.springcore.constructorInjection;
 
 public class Addition {
     private int a;

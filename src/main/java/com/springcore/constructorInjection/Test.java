@@ -1,4 +1,4 @@
-package com.constructorInjection;
+package com.springcore.constructorInjection;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

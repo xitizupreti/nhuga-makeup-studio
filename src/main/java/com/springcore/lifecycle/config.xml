@@ -3,8 +3,9 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="car1" class="com.example.Car">
-        <property name="model" value="Tesla Model S" />
+    <bean id="s1" class="com.springcore.lifecycle.Samosa" init-method="init"
+        destroy-method="destroy">
+        <property name="price" value="20" />
     </bean>
 
 </beans>
