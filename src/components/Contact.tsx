@@ -1,7 +1,9 @@
 import { site } from "@/config/site";
 import { InstagramIcon } from "./icons";
 
-const mapSrc = `https://maps.google.com/maps?q=${site.maps.lat},${site.maps.lng}&z=16&output=embed`;
+// The studio's own listing embed, so the pin is labelled "Nhuga Makeup Studio"
+// instead of an unnamed coordinate marker.
+const mapSrc = site.maps.embedUrl;
 
 export default function Contact() {
   return (
@@ -78,7 +80,8 @@ export default function Contact() {
             src={mapSrc}
             title={`Map showing ${site.name}`}
             loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
+            allowFullScreen
+            referrerPolicy="strict-origin-when-cross-origin"
             className="h-full w-full border-0"
           />
         </div>

@@ -3,17 +3,11 @@ import { site } from "@/config/site";
 import { WhatsAppButton } from "./WhatsAppDialog";
 
 /**
- * `image` is the first gallery photo when one exists, so the hero fills itself
- * in as soon as photos are dropped into public/gallery. Until then it shows the
- * studio logo on a soft pink panel rather than a fake stock photo.
+ * The panel deliberately shows the logo on a pink card rather than a gallery
+ * photo — it reads as the studio's identity, which is what the top of the page
+ * is for. The work itself is one scroll down in the gallery teaser.
  */
-export default function Hero({
-  image,
-  logo,
-}: {
-  image?: string;
-  logo?: string | null;
-}) {
+export default function Hero({ logo }: { logo?: string | null }) {
   return (
     <section id="top" className="relative overflow-hidden">
       <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-blush-100 via-cream to-cream" />
@@ -73,37 +67,24 @@ export default function Hero({
         </div>
 
         <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem] border border-blush-200 bg-blush-100 shadow-xl shadow-blush-200/40">
-          {image ? (
-            <Image
-              src={image}
-              alt={`${site.name} work`}
-              fill
-              priority
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover"
-            />
-          ) : (
-            <div className="flex h-full w-full flex-col items-center justify-center gap-6 bg-gradient-to-br from-blush-200 via-blush-100 to-blush-300/60 p-10 text-center">
-              {logo && (
-                <Image
-                  src={logo}
-                  alt=""
-                  width={320}
-                  height={415}
-                  priority
-                  className="h-auto w-44 max-w-[70%] mix-blend-multiply sm:w-56"
-                />
-              )}
-              <div>
-                <p className="font-serif text-2xl text-blush-800">
-                  {site.name}
-                </p>
-                <p className="mt-1 text-sm italic text-blush-700/80">
-                  {site.tagline}
-                </p>
-              </div>
+          <div className="flex h-full w-full flex-col items-center justify-center gap-6 bg-gradient-to-br from-blush-200 via-blush-100 to-blush-300/60 p-10 text-center">
+            {logo && (
+              <Image
+                src={logo}
+                alt=""
+                width={320}
+                height={415}
+                priority
+                className="h-auto w-44 max-w-[70%] mix-blend-multiply sm:w-56"
+              />
+            )}
+            <div>
+              <p className="font-serif text-2xl text-blush-800">{site.name}</p>
+              <p className="mt-1 text-sm italic text-blush-700/80">
+                {site.tagline}
+              </p>
             </div>
-          )}
+          </div>
         </div>
       </div>
     </section>

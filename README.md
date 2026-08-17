@@ -19,9 +19,14 @@ npm run dev
 
 | Route | What's on it |
 | --- | --- |
-| `/` | Hero, About, Services, Classes teaser, Gallery teaser, Opening offer, How it works, FAQ, Booking form, Contact + map |
+| `/` | Hero, About, and teasers for Services / Classes / Gallery, then Opening offer, How it works, FAQ, Booking form, Contact + map |
+| `/services` | Full services list |
 | `/classes` | All three class price lists |
-| `/gallery` | All photo albums |
+| `/gallery` | All photo albums (Certificates always last) |
+| `/about` | Oshika Manandhar, plus certificates if that album has photos |
+
+Home only *teases* Services, Classes and Gallery — each links out to its full
+page. The navbar highlights whichever section you've scrolled to.
 
 ## Edit content
 

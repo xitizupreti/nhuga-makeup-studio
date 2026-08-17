@@ -1,8 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
 import { site } from "@/config/site";
 import type { Offer } from "@/lib/offer";
 import DaysLeft from "./DaysLeft";
+import PromoImages from "./PromoImages";
 import { WhatsAppButton } from "./WhatsAppDialog";
 
 /**
@@ -62,28 +62,7 @@ export default function OpeningOffer({
           </div>
         </div>
 
-        {images.length > 0 && (
-          <ul className="grid grid-cols-2 gap-4">
-            {images.slice(0, 2).map((image, index) => (
-              <li
-                key={image}
-                className="relative aspect-[2/3] overflow-hidden rounded-2xl border border-white/20 bg-white/10"
-              >
-                <Image
-                  src={image}
-                  alt={
-                    index === 0
-                      ? `${site.promo.headline} — ${site.promo.offer}`
-                      : "Grand opening invitation"
-                  }
-                  fill
-                  sizes="(max-width: 1024px) 50vw, 25vw"
-                  className="object-cover"
-                />
-              </li>
-            ))}
-          </ul>
-        )}
+        <PromoImages images={images} />
       </div>
     </section>
   );

@@ -29,14 +29,11 @@ function withPosters(menu: Menu): MenuWithPosters {
 export default function Home() {
   const albums = getAlbums();
   const offer = getOffer();
-  // First photo of the first album that actually has any — albums can exist
-  // before their photos do.
-  const heroImage = albums.find((album) => album.photos.length > 0)?.photos[0];
 
   return (
     <>
       <JsonLd data={faqSchema()} />
-      <Hero image={heroImage} logo={getLogo()} />
+      <Hero logo={getLogo()} />
       <About />
       <MenuSection
         id="services"
@@ -45,6 +42,8 @@ export default function Home() {
         intro={serviceMenu.intro}
         tone="light"
         offer={offer}
+        layout="scroll"
+        more={{ href: "/services", label: "See all services →" }}
         menus={[withPosters(serviceMenu)]}
       />
       <ClassesTeaser offer={offer} />

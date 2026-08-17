@@ -95,3 +95,8 @@ export function getMenuPosters(menuId: string): string[] {
 export function getPromos(): string[] {
   return findImageSet("promo");
 }
+
+/** public/team/oshika.* — portrait for the About page. */
+export function getPortrait(): string | null {
+  return findPublicAsset(path.join("team", "oshika"));
+}

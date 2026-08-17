@@ -35,10 +35,19 @@ export const site = {
     line2: "Kalimati Chowk, Kathmandu",
   },
 
-  // Confirmed from the Google Maps link.
   maps: {
+    /** The studio's own Google Maps listing. */
     placeUrl:
-      "https://www.google.com/maps/place/Nhuga+Makeup+Studio/@27.698002,85.2995638,17z",
+      "https://www.google.com/maps/place/Nhuga+Makeup+Studio/@27.698002,85.2995638,959m/data=!3m1!1e3!4m6!3m5!1s0x39eb19002fa95d29:0x2260b85917cdb2bf!8m2!3d27.698002!4d85.2995638!16s%2Fg%2F11zdz6ht2j",
+    /**
+     * Embed for the listing itself, so the pin carries the studio's name rather
+     * than being a bare coordinate marker.
+     *
+     * `!5e0` near the end selects the standard road map — `!5e1` would switch
+     * it back to satellite.
+     */
+    embedUrl:
+      "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d4176.592366940473!2d85.2995638!3d27.698002!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb19002fa95d29%3A0x2260b85917cdb2bf!2sNhuga%20Makeup%20Studio!5e0!3m2!1sen!2snp!4v1786991921607!5m2!1sen!2snp",
     lat: 27.698002,
     lng: 85.2995638,
   },
@@ -71,6 +80,8 @@ export const site = {
   credit: {
     name: "Kshitiz Upreti",
     url: "https://kshitizupreti.com.np",
+    instagram: "https://www.instagram.com/kshitizupreti/",
+    whatsapp: "https://wa.me/9779869547209",
   },
 
   /**
@@ -151,6 +162,35 @@ export const serviceMenu: Menu = {
       blurb:
         "The team travels to your venue. Booked in advance; travel charged by distance.",
     },
+  ],
+};
+
+/**
+ * The person behind the studio.
+ *
+ * Every sentence below is drawn from something confirmed — the posters, the
+ * class price lists, or Kshitiz. Nothing about her background is invented.
+ *
+ * TODO: this is the thin part of the page. Ask Oshika for:
+ *   - how long she's been doing makeup, and where she trained
+ *   - what she most enjoys working on / her signature style
+ *   - any awards, brand training or certifications worth naming
+ *   - one or two lines in her own voice about why she started the studio
+ * Then add them as extra `bio` paragraphs.
+ */
+export const founder = {
+  name: "Oshika Manandhar",
+  role: "Founder & Lead Makeup Artist",
+  bio: [
+    `Nhuga Makeup Studio is Oshika Manandhar's studio, opening at Kalimati Chowk on 6 September 2026. The name carries the idea behind it — from passion to profession.`,
+    `She works across bridal, engagement and party makeup, alongside nail extension and lash work, and teaches all of it as structured courses.`,
+    `Courses run from five-day self-makeup sessions through to three-month professional packages covering makeup, nails and lash extension together.`,
+  ],
+  highlights: [
+    { label: "Based at", value: "Kalimati Chowk, Kathmandu" },
+    { label: "Works on", value: "Bridal, engagement & party" },
+    { label: "Also teaches", value: "Makeup, nails & lashes" },
+    { label: "Available", value: "In studio or on location" },
   ],
 };
 

@@ -1,4 +1,4 @@
-import { faqs, site, siteUrl } from "@/config/site";
+import { faqs, founder, site, siteUrl } from "@/config/site";
 
 /**
  * Structured data for search engines. Kept to the types Google actually renders
@@ -41,6 +41,7 @@ export function businessSchema() {
       closes: entry.closes,
     })),
     sameAs: [site.socials.instagram].filter(Boolean),
+    founder: { "@type": "Person", name: founder.name },
     areaServed: { "@type": "City", name: "Kathmandu" },
     knowsAbout: [
       "Bridal makeup",
@@ -49,6 +50,19 @@ export function businessSchema() {
       "Lash extension",
       "Makeup classes",
     ],
+  };
+}
+
+export function founderSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: founder.name,
+    jobTitle: founder.role,
+    description: founder.bio[0],
+    url: `${siteUrl}/about`,
+    worksFor: { "@id": `${siteUrl}/#business` },
+    sameAs: [site.socials.instagram].filter(Boolean),
   };
 }
 

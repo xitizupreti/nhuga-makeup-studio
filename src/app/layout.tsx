@@ -7,6 +7,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Promo from "@/components/Promo";
 import JsonLd from "@/components/JsonLd";
+import ScrollToTop from "@/components/ScrollToTop";
 import { WhatsAppProvider } from "@/components/WhatsAppDialog";
 import "./globals.css";
 
@@ -82,6 +83,7 @@ export default function RootLayout({
           <Header logo={logo} />
           <main>{children}</main>
           <Footer logo={logo} />
+          <ScrollToTop />
         </WhatsAppProvider>
       </body>
     </html>

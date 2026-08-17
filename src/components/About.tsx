@@ -1,4 +1,5 @@
-import { site } from "@/config/site";
+import Link from "next/link";
+import { founder, site } from "@/config/site";
 
 const points = [
   {
@@ -23,14 +24,20 @@ export default function About() {
           <p className="eyebrow">About</p>
           <h2 className="heading mt-3">A studio built around your day</h2>
           <p className="mt-6 leading-relaxed text-ink/70">
-            {site.name} is a makeup studio in Kathmandu working on bridal,
-            engagement and party looks, alongside nail extension and hair
-            styling. Every booking starts with a conversation about the outfit,
-            the venue and how you want to feel — the look follows from there.
+            {site.name} is {founder.name}&apos;s studio in Kalimati, Kathmandu,
+            working on bridal, engagement and party looks alongside nail
+            extension and lash work. Every booking starts with a conversation
+            about the outfit, the venue and how you want to feel — the look
+            follows from there.
           </p>
-          <a href="#booking" className="btn-primary mt-8">
-            Book a consultation
-          </a>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <a href="#booking" className="btn-primary">
+              Book a consultation
+            </a>
+            <Link href="/about" className="btn-secondary">
+              More about {founder.name.split(" ")[0]} →
+            </Link>
+          </div>
         </div>
 
         <ul className="grid gap-4 sm:grid-cols-1">

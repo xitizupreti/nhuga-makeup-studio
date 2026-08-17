@@ -1,14 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { site } from "@/config/site";
-import { InstagramIcon } from "./icons";
+import { InstagramIcon, WhatsAppIcon } from "./icons";
 
 const links = [
-  { href: "/#services", label: "Services" },
+  { href: "/services", label: "Services" },
   { href: "/classes", label: "Classes" },
   { href: "/gallery", label: "Gallery" },
-  { href: "/#about", label: "About" },
-  { href: "/#booking", label: "Book" },
+  { href: "/about", label: "About" },
+  { href: "/#booking", label: "Book Now" },
   { href: "/#contact", label: "Visit" },
 ];
 
@@ -63,13 +63,15 @@ export default function Footer({ logo }: { logo?: string | null }) {
         </a>
       </div>
 
-      <div className="border-t border-blush-100 py-4">
-        <div className="container-page flex flex-col items-center justify-between gap-2 text-xs text-ink/50 sm:flex-row">
+      {/* Extra room on the right (and below, when stacked) so the fixed
+          back-to-top button never covers the credit. */}
+      <div className="border-t border-blush-100 py-4 pb-20 sm:pb-4">
+        <div className="container-page flex flex-col items-center justify-between gap-2 text-xs text-ink/50 sm:flex-row sm:pr-16">
           <p>
             © {new Date().getFullYear()} {site.name}. All rights reserved.
           </p>
-          <p>
-            Built by{" "}
+          <p className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
+            <span>Built by</span>
             <a
               href={site.credit.url}
               target="_blank"
@@ -77,6 +79,26 @@ export default function Footer({ logo }: { logo?: string | null }) {
               className="font-semibold text-blush-600 underline decoration-blush-300 underline-offset-2 transition hover:text-blush-800 hover:decoration-blush-600"
             >
               {site.credit.name}
+            </a>
+            <a
+              href={site.credit.instagram}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`${site.credit.name} on Instagram`}
+              title="@kshitizupreti on Instagram"
+              className="text-blush-500 transition hover:text-blush-800"
+            >
+              <InstagramIcon className="h-4 w-4" />
+            </a>
+            <a
+              href={site.credit.whatsapp}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`${site.credit.name} on WhatsApp`}
+              title="WhatsApp +977 9869547209"
+              className="text-blush-500 transition hover:text-blush-800"
+            >
+              <WhatsAppIcon className="h-4 w-4" />
             </a>
           </p>
         </div>

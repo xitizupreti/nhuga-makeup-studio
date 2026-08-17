@@ -1,4 +1,5 @@
 import { bookingSteps } from "@/config/site";
+import { WhatsAppButton } from "./WhatsAppDialog";
 
 export default function HowItWorks() {
   return (
@@ -30,6 +31,15 @@ export default function HowItWorks() {
             </li>
           ))}
         </ol>
+
+        <div className="mt-12 flex flex-wrap items-center gap-3 border-t border-blush-100 pt-8">
+          <a href="#booking" className="btn-primary">
+            Book an appointment
+          </a>
+          <WhatsAppButton className="btn-secondary">
+            Or ask on WhatsApp
+          </WhatsAppButton>
+        </div>
       </div>
     </section>
   );

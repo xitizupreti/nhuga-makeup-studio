@@ -11,6 +11,9 @@ const IMAGE_EXTENSIONS = new Set([
   ".gif",
 ]);
 
+/** Album slugs forced to the end of the list, whatever their name. */
+const PINNED_LAST = ["certificates"];
+
 export type Album = {
   /** URL-safe id derived from the folder name. */
   slug: string;
@@ -63,5 +66,11 @@ export function getAlbums(): Album[] {
 
       return { slug: toSlug(dir.name), title: toTitle(dir.name), photos };
     })
-    .sort((a, b) => a.title.localeCompare(b.title));
+    .sort((a, b) => {
+      // Certificates aren't portfolio work, so they sit after the looks.
+      const aLast = PINNED_LAST.includes(a.slug) ? 1 : 0;
+      const bLast = PINNED_LAST.includes(b.slug) ? 1 : 0;
+      if (aLast !== bLast) return aLast - bLast;
+      return a.title.localeCompare(b.title);
+    });
 }

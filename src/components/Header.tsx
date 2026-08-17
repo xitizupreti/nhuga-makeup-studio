@@ -3,29 +3,69 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { site } from "@/config/site";
 import { InstagramIcon, WhatsAppIcon } from "./icons";
 import { WhatsAppButton } from "./WhatsAppDialog";
 
-// Absolute hrefs so the on-home anchors still work from /classes and /gallery.
+/**
+ * `route` marks links that own their own page. `section` is the id on the home
+ * page that highlights the link while it's in view — absolute hrefs so the home
+ * anchors still work from the other pages.
+ */
 const links = [
-  { href: "/#services", label: "Services" },
-  { href: "/classes", label: "Classes" },
-  { href: "/gallery", label: "Gallery" },
-  { href: "/#about", label: "About" },
-  { href: "/#booking", label: "Book" },
+  { href: "/", label: "Home", route: "/", section: "top" },
+  { href: "/services", label: "Services", route: "/services", section: "services" },
+  { href: "/classes", label: "Classes", route: "/classes", section: "classes-teaser" },
+  { href: "/gallery", label: "Gallery", route: "/gallery", section: "gallery-teaser" },
+  { href: "/about", label: "About", route: "/about" },
+  // `cta` renders this one as a pink pill rather than a plain text link.
+  { href: "/#booking", label: "Book Now", section: "booking", cta: true },
 ];
 
+/** Home section ids in the order they appear down the page. */
+const spySections = ["top", "services", "classes-teaser", "gallery-teaser", "booking"];
+
 export default function Header({ logo }: { logo?: string | null }) {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("top");
+
+  const onHome = pathname === "/";
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 8);
+
+      if (!onHome) return;
+
+      // The last section whose top has passed a line near the top of the
+      // viewport is the one being read.
+      const line = window.scrollY + window.innerHeight * 0.3;
+      let current = "top";
+      for (const id of spySections) {
+        const el = document.getElementById(id);
+        if (el && el.offsetTop <= line) current = id;
+      }
+      setActiveSection(current);
+    };
+
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [onHome]);
+
+  function isActive(link: (typeof links)[number]) {
+    // Off the home page, only the link owning this route is active.
+    if (!onHome) return link.route === pathname;
+    // On home, "Home" wins at the top and section links take over as you scroll.
+    return link.section === activeSection;
+  }
 
   return (
     <header
@@ -61,16 +101,35 @@ export default function Header({ logo }: { logo?: string | null }) {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-7 lg:flex">
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-sm text-ink/70 transition hover:text-blush-600"
-            >
-              {link.label}
-            </Link>
-          ))}
+        <nav className="hidden items-center gap-6 lg:flex">
+          {links.map((link) => {
+            const active = isActive(link);
+
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                aria-current={active ? "page" : undefined}
+                // `cta` is pink and bold, but still plain text — only the
+                // WhatsApp control should read as a button up here.
+                className={`relative py-1 text-sm transition ${
+                  link.cta
+                    ? `font-bold ${active ? "text-blush-700" : "text-blush-600 hover:text-blush-800"}`
+                    : active
+                      ? "font-semibold text-blush-700"
+                      : "text-ink/70 hover:text-blush-600"
+                }`}
+              >
+                {link.label}
+                <span
+                  aria-hidden
+                  className={`absolute -bottom-0.5 left-0 h-0.5 w-full rounded-full bg-blush-500 transition-opacity ${
+                    active ? "opacity-100" : "opacity-0"
+                  }`}
+                />
+              </Link>
+            );
+          })}
           <a
             href={site.socials.instagram}
             target="_blank"
@@ -107,22 +166,32 @@ export default function Header({ logo }: { logo?: string | null }) {
       {open && (
         <nav className="border-t border-blush-100 bg-cream lg:hidden">
           <div className="container-page flex flex-col py-3">
-            {links.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setOpen(false)}
-                className="py-2.5 text-sm text-ink/80"
-              >
-                {link.label}
-              </Link>
-            ))}
+            {links.map((link) => {
+              const active = isActive(link);
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setOpen(false)}
+                  aria-current={active ? "page" : undefined}
+                  className={`border-l-2 py-2.5 pl-3 text-sm transition ${
+                    link.cta ? "font-bold text-blush-700" : ""
+                  } ${
+                    active
+                      ? "border-blush-500 font-semibold text-blush-700"
+                      : "border-transparent text-ink/80"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
             <a
               href={site.socials.instagram}
               target="_blank"
               rel="noreferrer"
               onClick={() => setOpen(false)}
-              className="flex items-center gap-2 py-2.5 text-sm text-ink/80"
+              className="flex items-center gap-2 border-l-2 border-transparent py-2.5 pl-3 text-sm text-ink/80"
             >
               <InstagramIcon className="h-4 w-4 text-blush-600" />
               Instagram

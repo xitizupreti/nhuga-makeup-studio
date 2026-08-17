@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import {
   discountedPrice,
   formatPrice,
@@ -9,6 +10,7 @@ import {
   type MenuItem,
 } from "@/config/site";
 import type { Offer } from "@/lib/offer";
+import HScroller from "./HScroller";
 import MenuPoster from "./MenuPoster";
 import OfferNote from "./OfferNote";
 import { WhatsAppButton } from "./WhatsAppDialog";
@@ -50,13 +52,17 @@ function ItemCard({
   item,
   menuTitle,
   offer,
+  className = "",
 }: {
   item: MenuItem;
   menuTitle: string;
   offer: Offer;
+  className?: string;
 }) {
   return (
-    <li className="group flex flex-col rounded-2xl border border-blush-100 bg-white p-6 transition hover:border-blush-300 hover:shadow-lg hover:shadow-blush-100">
+    <li
+      className={`group flex flex-col rounded-2xl border border-blush-100 bg-white p-6 transition hover:border-blush-300 hover:shadow-lg hover:shadow-blush-100 ${className}`}
+    >
       <h4 className="font-serif text-xl text-blush-900">{item.name}</h4>
       {item.duration && (
         <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-blush-500">
@@ -91,10 +97,12 @@ function MenuGroup({
   menu,
   showHeading,
   offer,
+  layout,
 }: {
   menu: MenuWithPosters;
   showHeading: boolean;
   offer: Offer;
+  layout: "grid" | "scroll";
 }) {
   return (
     <div>
@@ -112,16 +120,32 @@ function MenuGroup({
         </div>
       )}
 
-      <ul className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {menu.items.map((item) => (
-          <ItemCard
-            key={`${item.name}-${item.duration ?? ""}`}
-            item={item}
-            menuTitle={menu.title}
-            offer={offer}
-          />
-        ))}
-      </ul>
+      <div className="mt-6">
+        {layout === "scroll" ? (
+          <HScroller label={menu.title}>
+            {menu.items.map((item) => (
+              <ItemCard
+                key={`${item.name}-${item.duration ?? ""}`}
+                item={item}
+                menuTitle={menu.title}
+                offer={offer}
+                className="w-[78%] shrink-0 snap-start sm:w-[45%] lg:w-[31%]"
+              />
+            ))}
+          </HScroller>
+        ) : (
+          <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {menu.items.map((item) => (
+              <ItemCard
+                key={`${item.name}-${item.duration ?? ""}`}
+                item={item}
+                menuTitle={menu.title}
+                offer={offer}
+              />
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   );
 }
@@ -140,6 +164,10 @@ export default function MenuSection({
   offer,
   /** Off on /classes, where PageHeader already carries the title. */
   showHeading = true,
+  /** "scroll" gives a swipeable horizontal row instead of a wrapping grid. */
+  layout = "grid",
+  /** Adds a "see all" button beside the heading, for teaser use on home. */
+  more,
 }: {
   id: string;
   eyebrow: string;
@@ -149,6 +177,8 @@ export default function MenuSection({
   tone: "light" | "pink";
   offer: Offer;
   showHeading?: boolean;
+  layout?: "grid" | "scroll";
+  more?: { href: string; label: string };
 }) {
   const [selection, setSelection] = useState<Selection>("all");
 
@@ -173,12 +203,19 @@ export default function MenuSection({
     >
       <div className="container-page">
         {showHeading ? (
-          <div className="max-w-2xl">
-            <p className="eyebrow">{eyebrow}</p>
-            <h2 className="heading mt-3">{heading}</h2>
-            <p className="mt-4 leading-relaxed text-ink/70">{intro}</p>
-            {!tabbed && (
-              <MenuPoster srcs={menus[0].posters} label={menus[0].title} />
+          <div className="flex flex-wrap items-end justify-between gap-6">
+            <div className="max-w-2xl">
+              <p className="eyebrow">{eyebrow}</p>
+              <h2 className="heading mt-3">{heading}</h2>
+              <p className="mt-4 leading-relaxed text-ink/70">{intro}</p>
+              {!tabbed && (
+                <MenuPoster srcs={menus[0].posters} label={menus[0].title} />
+              )}
+            </div>
+            {more && (
+              <Link href={more.href} className="btn-primary">
+                {more.label}
+              </Link>
             )}
           </div>
         ) : (
@@ -226,6 +263,7 @@ export default function MenuSection({
               menu={menu}
               showHeading={tabbed}
               offer={offer}
+              layout={layout}
             />
           ))}
         </div>
