@@ -5,6 +5,15 @@
  * posters. The Services list is still a draft — see the note above `serviceMenu`.
  */
 
+/**
+ * Public base URL, used for canonical links, the sitemap and link previews.
+ * Override with NEXT_PUBLIC_SITE_URL when the custom domain is ready — nothing
+ * else needs to change.
+ */
+export const siteUrl = (
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://nhuga-makeup-studio.vercel.app"
+).replace(/\/$/, "");
+
 export const site = {
   name: "Nhuga Makeup Studio",
   tagline: "From passion to profession",
@@ -39,6 +48,22 @@ export const site = {
     { days: "Saturday", time: "By appointment" },
   ],
 
+  /** Machine-readable version of `hours`, for search engines. Keep in sync. */
+  hoursSpec: [
+    {
+      days: [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+      ],
+      opens: "10:00",
+      closes: "19:00",
+    },
+  ],
+
   socials: {
     instagram: "https://www.instagram.com/nhugamakeupstudio/",
   },
@@ -49,9 +74,11 @@ export const site = {
   },
 
   /**
-   * Opening announcement. `discountPercent` also drives the struck-through
-   * original prices on the class cards — set `active: false` when the offer ends
-   * and both the bar and the discounted prices disappear together.
+   * Opening announcement and the opening discount.
+   *
+   * `discountPercent` drives the struck-through prices everywhere. The discount
+   * expires on its own after `endsOn` — see src/lib/offer.ts — so nobody has to
+   * remember to switch it off. `active: false` kills it early.
    */
   promo: {
     active: true,
@@ -59,6 +86,11 @@ export const site = {
     date: "Bhadra 21 · 6 Sep 2026",
     offer: "50% off for 3 months",
     discountPercent: 50,
+    /** Opening day. ISO, Nepal time. */
+    opensOn: "2026-09-06",
+    /** Last day of the 3-month offer, inclusive. */
+    endsOn: "2026-12-06",
+    endsOnLabel: "6 Dec 2026",
   },
 } as const;
 
@@ -251,10 +283,13 @@ export function formatPrice(amount: number) {
   return `Rs ${amount.toLocaleString("en-US")}`;
 }
 
-/** Price after the opening discount, or null when no offer is running. */
-export function discountedPrice(amount: number) {
-  if (!site.promo.active || !site.promo.discountPercent) return null;
-  return Math.round(amount * (1 - site.promo.discountPercent / 100));
+/**
+ * Price after a discount. `percent` comes from getOffer() rather than straight
+ * from config, so an expired offer stops discounting automatically.
+ */
+export function discountedPrice(amount: number, percent: number | null) {
+  if (!percent) return null;
+  return Math.round(amount * (1 - percent / 100));
 }
 
 /** Builds a WhatsApp deep link with the enquiry pre-typed. */

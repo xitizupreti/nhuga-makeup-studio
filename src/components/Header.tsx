@@ -54,12 +54,14 @@ export default function Header({ logo }: { logo?: string | null }) {
               className="h-12 w-auto mix-blend-multiply sm:h-16"
             />
           )}
-          <span className="font-serif text-lg font-semibold text-blush-900">
+          {/* Smaller on the narrowest phones so the wordmark, logo and
+              hamburger still fit on one line at 320px. */}
+          <span className="whitespace-nowrap font-serif text-base font-semibold leading-tight text-blush-900 sm:text-lg">
             Nhuga <span className="text-blush-500">Makeup Studio</span>
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-7 md:flex">
+        <nav className="hidden items-center gap-7 lg:flex">
           {links.map((link) => (
             <Link
               key={link.href}
@@ -90,7 +92,7 @@ export default function Header({ logo }: { logo?: string | null }) {
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-label="Toggle menu"
-          className="rounded-lg border border-blush-200 p-2 text-blush-700 md:hidden"
+          className="rounded-lg border border-blush-200 p-2 text-blush-700 lg:hidden"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             {open ? (
@@ -103,7 +105,7 @@ export default function Header({ logo }: { logo?: string | null }) {
       </div>
 
       {open && (
-        <nav className="border-t border-blush-100 bg-cream md:hidden">
+        <nav className="border-t border-blush-100 bg-cream lg:hidden">
           <div className="container-page flex flex-col py-3">
             {links.map((link) => (
               <Link

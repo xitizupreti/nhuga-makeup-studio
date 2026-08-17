@@ -106,8 +106,9 @@ export default function Lightbox({
         </>
       )}
 
+      {/* Shorter on phones so the caption and arrows don't sit on the image. */}
       <div
-        className="relative h-[85vh] w-full max-w-3xl cursor-default"
+        className="relative h-[70vh] w-full max-w-3xl cursor-default sm:h-[85vh]"
         onClick={(e) => e.stopPropagation()}
       >
         <Image

@@ -1,15 +1,14 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Jost } from "next/font/google";
-import { site } from "@/config/site";
+import { site, siteUrl } from "@/config/site";
 import { getLogo, getPromos } from "@/lib/assets";
+import { businessSchema } from "@/lib/schema";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Promo from "@/components/Promo";
+import JsonLd from "@/components/JsonLd";
 import { WhatsAppProvider } from "@/components/WhatsAppDialog";
 import "./globals.css";
-
-const logo = getLogo();
-const promos = getPromos();
 
 const serif = Cormorant_Garamond({
   subsets: ["latin"],
@@ -24,21 +23,51 @@ const sans = Jost({
   display: "swap",
 });
 
+const logo = getLogo();
+const promos = getPromos();
+
+const title = `${site.name} — ${site.tagline}`;
+
 export const metadata: Metadata = {
+  // Makes every relative URL below absolute, which link previews require.
+  metadataBase: new URL(siteUrl),
   title: {
-    default: `${site.name} — ${site.tagline}`,
+    default: title,
     template: `%s — ${site.name}`,
   },
   description: site.description,
-  // Drives the browser tab icon. Falls back to Next's default until
-  // public/logo.* exists.
+  applicationName: site.name,
+  keywords: [
+    "makeup studio Kathmandu",
+    "bridal makeup Kathmandu",
+    "makeup artist Kalimati",
+    "makeup classes Nepal",
+    "nail extension Kathmandu",
+    "lash extension Kathmandu",
+    "beauty parlour Kalimati",
+    "Nhuga Makeup Studio",
+  ],
+  alternates: { canonical: "/" },
   icons: logo ? { icon: logo, apple: logo } : undefined,
   openGraph: {
-    title: `${site.name} — ${site.tagline}`,
-    description: site.description,
     type: "website",
+    siteName: site.name,
+    title,
+    description: site.description,
+    url: "/",
     locale: "en_NP",
   },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description: site.description,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
+  },
+  category: "Beauty & Personal Care",
 };
 
 export default function RootLayout({
@@ -47,6 +76,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${serif.variable} ${sans.variable}`}>
       <body className="font-sans">
+        <JsonLd data={businessSchema()} />
         <WhatsAppProvider>
           {site.promo.active && <Promo images={promos} />}
           <Header logo={logo} />

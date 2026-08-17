@@ -73,7 +73,7 @@ export default function Contact() {
           </div>
         </div>
 
-        <div className="h-[380px] overflow-hidden rounded-3xl border border-blush-100 shadow-sm">
+        <div className="h-[300px] overflow-hidden rounded-3xl border border-blush-100 shadow-sm sm:h-[380px]">
           <iframe
             src={mapSrc}
             title={`Map showing ${site.name}`}

@@ -20,7 +20,9 @@ const links = [
 export default function Footer({ logo }: { logo?: string | null }) {
   return (
     <footer className="border-t border-blush-100 bg-blush-50">
-      <div className="container-page flex flex-col gap-8 py-12 sm:flex-row sm:items-center sm:justify-between">
+      {/* Three columns need more than 640px to sit side by side without
+          crowding, so this stacks until md rather than sm. */}
+      <div className="container-page flex flex-col gap-8 py-12 md:flex-row md:items-center md:justify-between">
         <Link href="/" className="flex items-center gap-3">
           {logo && (
             <Image
@@ -37,7 +39,7 @@ export default function Footer({ logo }: { logo?: string | null }) {
           </div>
         </Link>
 
-        <nav className="flex flex-wrap gap-x-6 gap-y-2 text-sm sm:justify-end">
+        <nav className="flex flex-wrap gap-x-6 gap-y-2 text-sm md:justify-end">
           {links.map((link) => (
             <Link
               key={link.href}

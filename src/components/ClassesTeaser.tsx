@@ -4,15 +4,17 @@ import {
   classMenus,
   discountedPrice,
   formatPrice,
-  site,
 } from "@/config/site";
+import type { Offer } from "@/lib/offer";
+import DaysLeft from "./DaysLeft";
+import OfferNote from "./OfferNote";
 
 /**
  * Home-page taster only — the full price lists live on /classes. Shows each
  * class track with its course count and the cheapest entry price.
  */
-export default function ClassesTeaser() {
-  const from = discountedPrice(cheapestClassPrice) ?? cheapestClassPrice;
+export default function ClassesTeaser({ offer }: { offer: Offer }) {
+  const from = discountedPrice(cheapestClassPrice, offer.percent) ?? cheapestClassPrice;
 
   return (
     <section id="classes-teaser" className="section bg-blush-50">
@@ -24,8 +26,18 @@ export default function ClassesTeaser() {
             <p className="mt-4 leading-relaxed text-ink/70">
               Train with us in makeup, nails and lash work — on their own or as a
               combined package. Courses start from{" "}
-              <strong className="text-blush-700">{formatPrice(from)}</strong>{" "}
-              with the opening offer.
+              <strong className="text-blush-700">{formatPrice(from)}</strong>
+              {offer.live && (
+                <>
+                  {" "}
+                  with the {offer.percent}% opening offer, which ends{" "}
+                  {offer.endsOnLabel} —{" "}
+                  <strong className="text-blush-700">
+                    <DaysLeft initial={offer.daysLeft} />
+                  </strong>
+                </>
+              )}
+              .
             </p>
           </div>
           <Link href="/classes" className="btn-primary">
@@ -39,7 +51,10 @@ export default function ClassesTeaser() {
               .map((item) => item.price)
               .filter((price): price is number => price !== undefined);
             const lowest = prices.length ? Math.min(...prices) : undefined;
-            const offer = lowest ? discountedPrice(lowest) : null;
+            const discounted =
+              lowest !== undefined
+                ? discountedPrice(lowest, offer.percent)
+                : null;
 
             return (
               <li key={menu.id}>
@@ -53,28 +68,31 @@ export default function ClassesTeaser() {
                   <p className="mt-2 flex-1 text-sm leading-relaxed text-ink/65">
                     {menu.intro}
                   </p>
-                  <div className="mt-5 flex items-center justify-between border-t border-blush-100 pt-4 text-sm">
-                    <span className="text-ink/50">
-                      {menu.items.length} courses
-                    </span>
-                    {lowest !== undefined && (
-                      <span className="font-semibold text-blush-700">
-                        from {formatPrice(offer ?? lowest)}
+                  <div className="mt-5 border-t border-blush-100 pt-4">
+                    <div className="flex items-baseline justify-between gap-3 text-sm">
+                      <span className="text-ink/50">
+                        {menu.items.length} courses
                       </span>
-                    )}
+                      {lowest !== undefined && (
+                        <span className="flex flex-wrap items-baseline gap-x-2">
+                          <span className="font-semibold text-blush-700">
+                            from {formatPrice(discounted ?? lowest)}
+                          </span>
+                          {discounted !== null && (
+                            <s className="text-xs text-ink/40">
+                              {formatPrice(lowest)}
+                            </s>
+                          )}
+                        </span>
+                      )}
+                    </div>
+                    <OfferNote offer={offer} className="mt-2" />
                   </div>
                 </Link>
               </li>
             );
           })}
         </ul>
-
-        {site.promo.active && (
-          <p className="mt-6 text-xs text-ink/50">
-            Prices shown include the {site.promo.discountPercent}% opening offer
-            ({site.promo.offer}).
-          </p>
-        )}
       </div>
     </section>
   );

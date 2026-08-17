@@ -44,18 +44,30 @@ export default function Hero({
             </WhatsAppButton>
           </div>
 
-          <dl className="mt-12 grid max-w-sm grid-cols-3 gap-6 border-t border-blush-200 pt-6">
+          <dl className="mt-12 grid max-w-sm grid-cols-3 gap-4 border-t border-blush-200 pt-6 sm:gap-6">
             <div>
-              <dt className="text-xs uppercase tracking-wider text-ink/50">Studio</dt>
-              <dd className="mt-1 font-serif text-xl text-blush-800">Kathmandu</dd>
+              <dt className="text-[0.65rem] uppercase tracking-wider text-ink/50 sm:text-xs">
+                Studio
+              </dt>
+              <dd className="mt-1 font-serif text-lg text-blush-800 sm:text-xl">
+                Kalimati
+              </dd>
             </div>
             <div>
-              <dt className="text-xs uppercase tracking-wider text-ink/50">Outdoor</dt>
-              <dd className="mt-1 font-serif text-xl text-blush-800">On booking</dd>
+              <dt className="text-[0.65rem] uppercase tracking-wider text-ink/50 sm:text-xs">
+                Outdoor
+              </dt>
+              <dd className="mt-1 font-serif text-lg text-blush-800 sm:text-xl">
+                On booking
+              </dd>
             </div>
             <div>
-              <dt className="text-xs uppercase tracking-wider text-ink/50">Classes</dt>
-              <dd className="mt-1 font-serif text-xl text-blush-800">Available</dd>
+              <dt className="text-[0.65rem] uppercase tracking-wider text-ink/50 sm:text-xs">
+                Classes
+              </dt>
+              <dd className="mt-1 font-serif text-lg text-blush-800 sm:text-xl">
+                Available
+              </dd>
             </div>
           </dl>
         </div>

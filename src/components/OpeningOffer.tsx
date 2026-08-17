@@ -1,13 +1,21 @@
 import Image from "next/image";
 import Link from "next/link";
 import { site } from "@/config/site";
+import type { Offer } from "@/lib/offer";
+import DaysLeft from "./DaysLeft";
 import { WhatsAppButton } from "./WhatsAppDialog";
 
 /**
  * The studio hasn't opened yet, so this is the page's main hook. Shows the
  * opening artwork when it exists in public/promo, otherwise stands on the text.
  */
-export default function OpeningOffer({ images }: { images: string[] }) {
+export default function OpeningOffer({
+  images,
+  offer,
+}: {
+  images: string[];
+  offer: Offer;
+}) {
   return (
     <section id="opening" className="section bg-blush-700 text-white">
       <div className="container-page grid items-center gap-12 lg:grid-cols-2">
@@ -29,6 +37,17 @@ export default function OpeningOffer({ images }: { images: string[] }) {
             Every service and course is half price for the first three months.
             Enquire now and we&apos;ll hold a date for you.
           </p>
+
+          {offer.live && (
+            <div className="mt-6 inline-flex flex-wrap items-center gap-x-3 gap-y-1 rounded-2xl bg-white/10 px-5 py-3 text-sm">
+              <span className="font-serif text-2xl font-semibold text-white">
+                <DaysLeft initial={offer.daysLeft} />
+              </span>
+              <span className="text-white/70">
+                offer ends {offer.endsOnLabel}
+              </span>
+            </div>
+          )}
 
           <div className="mt-8 flex flex-wrap gap-3">
             <WhatsAppButton className="btn bg-white text-blush-800 hover:bg-blush-50">

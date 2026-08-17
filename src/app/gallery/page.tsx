@@ -1,12 +1,18 @@
 import type { Metadata } from "next";
 import Gallery from "@/components/Gallery";
 import PageHeader from "@/components/PageHeader";
+import JsonLd from "@/components/JsonLd";
 import { getAlbums } from "@/lib/gallery";
+import { breadcrumbSchema } from "@/lib/schema";
+
+const description =
+  "Bridal, party and nail work from Nhuga Makeup Studio, Kalimati Chowk, Kathmandu.";
 
 export const metadata: Metadata = {
   title: "Gallery",
-  description:
-    "Bridal, party and nail work from Nhuga Makeup Studio, Kalimati Chowk, Kathmandu.",
+  description,
+  alternates: { canonical: "/gallery" },
+  openGraph: { title: "Gallery", description, url: "/gallery" },
 };
 
 export default function GalleryPage() {
@@ -14,6 +20,7 @@ export default function GalleryPage() {
 
   return (
     <>
+      <JsonLd data={breadcrumbSchema("Gallery", "/gallery")} />
       <PageHeader
         eyebrow="Portfolio"
         title="Gallery"

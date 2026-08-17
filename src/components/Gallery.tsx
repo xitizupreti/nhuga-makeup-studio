@@ -84,7 +84,14 @@ export default function Gallery({
   const openAlbum = lightbox ? albums[lightbox.album] : null;
 
   return (
-    <section id="gallery" className="section bg-white">
+    <section
+      id="gallery"
+      // Without its own heading a PageHeader sits directly above, so the full
+      // section padding would leave a big empty band between the two.
+      className={`bg-white ${
+        showHeading ? "section" : "scroll-mt-20 pb-20 pt-10 sm:pb-28 sm:pt-12"
+      }`}
+    >
       <div className="container-page">
         {showHeading && (
           <div className="max-w-2xl">

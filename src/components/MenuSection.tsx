@@ -8,14 +8,16 @@ import {
   type Menu,
   type MenuItem,
 } from "@/config/site";
+import type { Offer } from "@/lib/offer";
 import MenuPoster from "./MenuPoster";
+import OfferNote from "./OfferNote";
 import { WhatsAppButton } from "./WhatsAppDialog";
 
 export type MenuWithPosters = Menu & { posters: string[] };
 
 type Selection = "all" | number;
 
-function Price({ item }: { item: MenuItem }) {
+function Price({ item, offer }: { item: MenuItem; offer: Offer }) {
   if (item.price === undefined) {
     return (
       <span className="text-sm font-semibold text-blush-700">
@@ -24,9 +26,9 @@ function Price({ item }: { item: MenuItem }) {
     );
   }
 
-  const offer = discountedPrice(item.price);
+  const discounted = discountedPrice(item.price, offer.percent);
 
-  if (offer === null) {
+  if (discounted === null) {
     return (
       <span className="text-sm font-semibold text-blush-700">
         {formatPrice(item.price)}
@@ -37,17 +39,22 @@ function Price({ item }: { item: MenuItem }) {
   return (
     <span className="flex flex-wrap items-baseline gap-x-2">
       <span className="text-base font-bold text-blush-700">
-        {formatPrice(offer)}
+        {formatPrice(discounted)}
       </span>
       <s className="text-xs text-ink/40">{formatPrice(item.price)}</s>
-      <span className="rounded-full bg-blush-100 px-2 py-0.5 text-[0.65rem] font-semibold uppercase tracking-wider text-blush-700">
-        {site.promo.discountPercent}% off
-      </span>
     </span>
   );
 }
 
-function ItemCard({ item, menuTitle }: { item: MenuItem; menuTitle: string }) {
+function ItemCard({
+  item,
+  menuTitle,
+  offer,
+}: {
+  item: MenuItem;
+  menuTitle: string;
+  offer: Offer;
+}) {
   return (
     <li className="group flex flex-col rounded-2xl border border-blush-100 bg-white p-6 transition hover:border-blush-300 hover:shadow-lg hover:shadow-blush-100">
       <h4 className="font-serif text-xl text-blush-900">{item.name}</h4>
@@ -61,15 +68,20 @@ function ItemCard({ item, menuTitle }: { item: MenuItem; menuTitle: string }) {
           {item.blurb}
         </p>
       )}
-      <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-blush-100 pt-4">
-        <Price item={item} />
-        <WhatsAppButton
-          // Matches the enquiryOptions format so the dialog preselects it.
-          subject={`${item.name}${item.duration ? ` — ${item.duration}` : ""} (${menuTitle})`}
-          className="text-sm font-semibold text-blush-500 transition group-hover:text-blush-700"
-        >
-          Enquire →
-        </WhatsAppButton>
+      <div className="mt-5 border-t border-blush-100 pt-4">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <Price item={item} offer={offer} />
+          <WhatsAppButton
+            // Matches the enquiryOptions format so the dialog preselects it.
+            subject={`${item.name}${item.duration ? ` — ${item.duration}` : ""} (${menuTitle})`}
+            className="text-sm font-semibold text-blush-500 transition group-hover:text-blush-700"
+          >
+            Enquire →
+          </WhatsAppButton>
+        </div>
+        {item.price !== undefined && (
+          <OfferNote offer={offer} className="mt-2" />
+        )}
       </div>
     </li>
   );
@@ -78,9 +90,11 @@ function ItemCard({ item, menuTitle }: { item: MenuItem; menuTitle: string }) {
 function MenuGroup({
   menu,
   showHeading,
+  offer,
 }: {
   menu: MenuWithPosters;
   showHeading: boolean;
+  offer: Offer;
 }) {
   return (
     <div>
@@ -104,6 +118,7 @@ function MenuGroup({
             key={`${item.name}-${item.duration ?? ""}`}
             item={item}
             menuTitle={menu.title}
+            offer={offer}
           />
         ))}
       </ul>
@@ -122,6 +137,7 @@ export default function MenuSection({
   intro,
   menus,
   tone,
+  offer,
   /** Off on /classes, where PageHeader already carries the title. */
   showHeading = true,
 }: {
@@ -131,6 +147,7 @@ export default function MenuSection({
   intro: string;
   menus: MenuWithPosters[];
   tone: "light" | "pink";
+  offer: Offer;
   showHeading?: boolean;
 }) {
   const [selection, setSelection] = useState<Selection>("all");
@@ -148,7 +165,11 @@ export default function MenuSection({
   return (
     <section
       id={id}
-      className={`section ${tone === "pink" ? "bg-blush-50" : "bg-white"}`}
+      // Without its own heading a PageHeader sits directly above, so the full
+      // section padding would leave a big empty band between the two.
+      className={`${
+        showHeading ? "section" : "scroll-mt-20 pb-20 pt-10 sm:pb-28 sm:pt-12"
+      } ${tone === "pink" ? "bg-blush-50" : "bg-white"}`}
     >
       <div className="container-page">
         {showHeading ? (
@@ -200,14 +221,19 @@ export default function MenuSection({
 
         <div className={`${tabbed ? "mt-10 space-y-12" : "mt-8"}`}>
           {shown.map((menu) => (
-            <MenuGroup key={menu.id} menu={menu} showHeading={tabbed} />
+            <MenuGroup
+              key={menu.id}
+              menu={menu}
+              showHeading={tabbed}
+              offer={offer}
+            />
           ))}
         </div>
 
-        {tabbed && site.promo.active && (
+        {tabbed && offer.live && (
           <p className="mt-8 text-xs text-ink/50">
-            Discounted prices reflect the {site.promo.discountPercent}% opening
-            offer ({site.promo.offer}). Original prices shown struck through.
+            Prices shown include the {offer.percent}% opening offer, running
+            until {offer.endsOnLabel}. Original prices shown struck through.
           </p>
         )}
       </div>

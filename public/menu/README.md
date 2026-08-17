@@ -1,33 +1,26 @@
 # Menu posters
 
-Drop the studio's own menu images here and a "View the … menu" button appears on
-that section automatically. No poster, no button.
-
-The name must match the menu `id` in `src/config/site.ts`:
+Add a poster and a "View the … menu" button appears on that section.
 
 ```
 public/menu/
-  classes-makeup.jpg     -> Classes → "Makeup" tab
-  classes-nails.jpg      -> Classes → "Nails" tab
-  classes-combined.jpg   -> Classes → "Makeup + Nails + Lashes" tab
+  classes-makeup.jpg     -> Classes, Makeup tab
+  classes-nails.jpg      -> Classes, Nails tab
+  classes-combined.jpg   -> Classes, Makeup + Nails + Lashes tab
   services.jpg           -> Services section
 ```
 
-A folder works too, when one menu has several pages:
+Filenames must match the menu `id` in `src/config/site.ts`.
+
+For several pages of one menu, use a folder instead:
 
 ```
-public/menu/
-  classes-combined/
-    01.jpg
-    02.jpg
+public/menu/classes-combined/01.jpg, 02.jpg
 ```
 
-Supported: `.svg` `.png` `.webp` `.jpg` `.jpeg` `.avif`. Folder contents sort by
-filename, so name them `01`, `02`, `03`… to control the order.
+Formats: `.svg` `.png` `.webp` `.jpg` `.jpeg` `.avif`
 
-The text cards stay the main content — these posters are the branded version of
-the same information. **Keep the prices in `src/config/site.ts` in sync with
-whatever the posters say**, including when the opening discount ends.
+**Keep the prices in `src/config/site.ts` matching the posters** — the text
+cards are the main content, these are just the branded version.
 
-Posters are read at build time, so run `npm run build` (or redeploy) after
-adding them.
+Read at build time — redeploy after adding.

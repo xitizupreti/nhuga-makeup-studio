@@ -18,11 +18,13 @@ export default function Promo({ images }: { images: string[] }) {
           <span className="font-semibold uppercase tracking-wider">
             {site.promo.headline}
           </span>
-          <span aria-hidden className="text-white/40">
+          {/* Separators hidden on phones, where the bar wraps and a dot would
+              be left dangling at the end of a line. */}
+          <span aria-hidden className="hidden text-white/40 sm:inline">
             •
           </span>
           <span className="text-white/90">{site.promo.date}</span>
-          <span aria-hidden className="text-white/40">
+          <span aria-hidden className="hidden text-white/40 sm:inline">
             •
           </span>
           <span className="font-semibold text-white">{site.promo.offer}</span>
