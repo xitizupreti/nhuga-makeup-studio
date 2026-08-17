@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-cream text-ink antialiased;
+  }
+
+  ::selection {
+    @apply bg-blush-200 text-blush-900;
+  }
+
+  /* Tailwind's preflight only covers button and [role="button"]. Cover the rest
+     so everything interactive shows a pointer. */
+  a[href],
+  button,
+  select,
+  summary,
+  label[for],
+  [role="button"] {
+    @apply cursor-pointer;
+  }
+
+  button:disabled,
+  [aria-disabled="true"] {
+    @apply cursor-not-allowed;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+  }
+
+  .section {
+    @apply scroll-mt-20 py-20 sm:py-28;
+  }
+
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.22em] text-blush-600;
+  }
+
+  .heading {
+    @apply font-serif text-3xl leading-tight text-blush-900 sm:text-4xl md:text-5xl;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blush-500;
+  }
+
+  .btn-primary {
+    @apply btn bg-blush-600 text-white hover:bg-blush-700;
+  }
+
+  .btn-secondary {
+    @apply btn border border-blush-300 bg-white/70 text-blush-800 hover:border-blush-500 hover:bg-blush-50;
+  }
+
+  .field {
+    @apply w-full rounded-xl border border-blush-200 bg-white px-4 py-3 text-sm text-ink placeholder:text-blush-300 focus:border-blush-500 focus:outline-none focus:ring-2 focus:ring-blush-200;
+  }
+
+  .label {
+    @apply mb-1.5 block text-xs font-semibold uppercase tracking-wider text-blush-700;
+  }
+}
