@@ -2,7 +2,7 @@
  * Single source of truth for every real-world detail on the site.
  *
  * Contact details, class names and prices are transcribed from the studio's own
- * posters. The Services list is still a draft — see the note above `serviceMenu`.
+ * posters. Only the FAQ answers marked TODO are still unconfirmed.
  */
 
 /**
@@ -122,48 +122,72 @@ export type Menu = {
   items: MenuItem[];
 };
 
-/**
- * TODO: not yet confirmed by the studio. These service names are a draft and
- * carry no prices — correct them before launch.
- */
-export const serviceMenu: Menu = {
-  id: "services",
-  title: "Services",
-  intro:
-    "Available in the studio, or on location at your home or venue when booked in advance.",
-  items: [
-    {
-      name: "Bridal Makeup",
-      blurb:
-        "Full bridal look for the wedding day, including hair styling and draping.",
-    },
-    {
-      name: "Engagement & Reception",
-      blurb: "Softer, camera-ready makeup for engagements and receptions.",
-    },
-    {
-      name: "Party & Occasion Makeup",
-      blurb: "Everyday glam for parties, shoots and family functions.",
-    },
-    {
-      name: "Hair Styling",
-      blurb: "Blow-dry, curls and updos, booked on its own or with makeup.",
-    },
-    {
-      name: "Nail Extension",
-      blurb: "Gel and acrylic extensions with custom nail art.",
-    },
-    {
-      name: "Lash Lifting & Extension",
-      blurb: "Lash lifts and extensions for a fuller, lifted eye.",
-    },
-    {
-      name: "Outdoor / On-location Service",
-      blurb:
-        "The team travels to your venue. Booked in advance; travel charged by distance.",
-    },
-  ],
-};
+/** Section-level intro for Services, above the tabs. */
+export const servicesIntro =
+  "Bridal, party and groom makeup, plus nails, lashes and everyday beauty treatments \u2014 in the studio, or at your venue when booked in advance.";
+
+/** Printed on the studio's own service posters. */
+export const servicePolicies = [
+  {
+    title: "Home service",
+    body: "Available on booking. A 25% charge is added on top of the listed price.",
+  },
+  {
+    title: "Payment",
+    body: "50% in advance at the time of booking, and the remaining 50% after the service.",
+  },
+];
+
+/** Transcribed from the studio's four service price lists. */
+export const serviceMenus: Menu[] = [
+  {
+    id: "services-bridal",
+    title: "Bridal & Party",
+    intro: "Makeup and hairstyle with sari draping, unless noted otherwise.",
+    items: [
+      { name: "Bridal Makeup", price: 15000, blurb: "Makeup & hairstyle with sari draping." },
+      { name: "Reception Bride", price: 13000, blurb: "Makeup & hairstyle with sari draping." },
+      { name: "Engagement Bride", price: 10000, blurb: "Makeup & hairstyle with sari draping." },
+      { name: "Mehendi Bride", price: 10000, blurb: "Makeup & hairstyle with sari draping." },
+      { name: "Groom Makeup", price: 3000, blurb: "Makeup & hair styling." },
+      { name: "Normal Party Makeup", price: 3000, blurb: "Makeup & hairstyle with sari draping." },
+    ],
+  },
+  {
+    id: "services-nails",
+    title: "Nail Extensions",
+    intro: "Extensions and overlays, finished with the nail art you choose.",
+    items: [
+      { name: "Overlay on both hands", price: 500 },
+      { name: "Gel Extension", price: 1500, blurb: "Final price depends on the art." },
+      { name: "Acrylic Extension", price: 2000, blurb: "Final price depends on the art." },
+    ],
+  },
+  {
+    id: "services-lashes",
+    title: "Lash Extensions",
+    intro: "From a natural set through to mega volume, plus lash lifting.",
+    items: [
+      { name: "Normal Lash Extension", price: 1000 },
+      { name: "Volume Lash Extension", price: 1500 },
+      { name: "Mega Volume Lash Extension", price: 2000 },
+      { name: "Hybrid Volume Lash Extension", price: 2500 },
+      { name: "Lash Lifting", price: 600 },
+    ],
+  },
+  {
+    id: "services-beauty",
+    title: "Beauty & Grooming",
+    intro: "Everyday treatments, on their own or alongside a makeup booking.",
+    items: [
+      { name: "Facial", price: 1000 },
+      { name: "Normal Cleansing", price: 500 },
+      { name: "Waxing \u2014 Full Body", price: 1500 },
+      { name: "Underarms Waxing", price: 500 },
+      { name: "Hair Oil Massage", price: 500 },
+    ],
+  },
+];
 
 /**
  * The person behind the studio.
@@ -252,12 +276,19 @@ export const classMenus: Menu[] = [
 ];
 
 /** Every service and class, for the "what is this about?" dropdowns. */
-export const enquiryOptions: string[] = [serviceMenu, ...classMenus].flatMap(
+export const enquiryOptions: string[] = [...serviceMenus, ...classMenus].flatMap(
   (menu) =>
     menu.items.map(
       (item) =>
         `${item.name}${item.duration ? ` — ${item.duration}` : ""} (${menu.title})`,
     ),
+);
+
+/** Cheapest service price, for the "from Rs …" line on the home teaser. */
+export const cheapestServicePrice = Math.min(
+  ...serviceMenus.flatMap((menu) =>
+    menu.items.map((item) => item.price ?? Infinity),
+  ),
 );
 
 /** Cheapest class price, for the "from Rs …" line on the home teaser. */
@@ -287,9 +318,10 @@ export const bookingSteps = [
 ];
 
 /**
- * TODO: every answer below is a DRAFT written from general practice, not
- * confirmed by the studio. Read through and correct before this goes live —
- * especially anything touching trials, travel charges, kits or payment.
+ * Home service and payment are taken from the studio's own service posters.
+ *
+ * TODO: the bridal-trial and class-kit answers are still deliberately vague
+ * because the studio hasn't confirmed them. Replace them with real answers.
  */
 export const faqs = [
   {
@@ -302,7 +334,7 @@ export const faqs = [
   },
   {
     q: "Do you come to my home or venue?",
-    a: "Yes — outdoor service is available on booking, in and around Kathmandu. Send us your venue and we'll confirm the timing and any travel cost.",
+    a: "Yes — home and venue service is available on booking. A 25% charge is added on top of the listed price. Send us your venue and we'll confirm the timing.",
   },
   {
     q: "Is there a bridal trial before the wedding day?",
@@ -314,7 +346,7 @@ export const faqs = [
   },
   {
     q: "How do I pay?",
-    a: "We'll confirm the amount and how to pay when we confirm your booking.",
+    a: "50% in advance at the time of booking, and the remaining 50% after the service.",
   },
 ];
 

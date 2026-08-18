@@ -7,6 +7,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Promo from "@/components/Promo";
 import JsonLd from "@/components/JsonLd";
+import IntroSplash from "@/components/IntroSplash";
 import ScrollToTop from "@/components/ScrollToTop";
 import { WhatsAppProvider } from "@/components/WhatsAppDialog";
 import "./globals.css";
@@ -78,6 +79,7 @@ export default function RootLayout({
     <html lang="en" className={`${serif.variable} ${sans.variable}`}>
       <body className="font-sans">
         <JsonLd data={businessSchema()} />
+        <IntroSplash logo={logo} />
         <WhatsAppProvider>
           {site.promo.active && <Promo images={promos} />}
           <Header logo={logo} />

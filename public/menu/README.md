@@ -4,10 +4,13 @@ Add a poster and a "View the … menu" button appears on that section.
 
 ```
 public/menu/
-  classes-makeup.jpg     -> Classes, Makeup tab
-  classes-nails.jpg      -> Classes, Nails tab
-  classes-combined.jpg   -> Classes, Makeup + Nails + Lashes tab
-  services.jpg           -> Services section
+  services-bridal.jpg     -> Services, Bridal & Party tab
+  services-nails.jpg      -> Services, Nail Extensions tab
+  services-lashes.jpg     -> Services, Lash Extensions tab
+  services-beauty.jpg     -> Services, Beauty & Grooming tab
+  classes-makeup.jpg      -> Classes, Makeup tab
+  classes-nails.jpg       -> Classes, Nails tab
+  classes-combined.jpg    -> Classes, Makeup + Nails + Lashes tab
 ```
 
 Filenames must match the menu `id` in `src/config/site.ts`.

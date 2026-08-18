@@ -5,6 +5,7 @@ import { getMenuPosters } from "@/lib/assets";
 import { getOffer } from "@/lib/offer";
 import { breadcrumbSchema } from "@/lib/schema";
 import JsonLd from "@/components/JsonLd";
+import AskForMore from "@/components/AskForMore";
 import { classMenus, classesIntro, type Menu } from "@/config/site";
 
 /** See the note in src/app/page.tsx — keeps the countdown and discount honest. */
@@ -46,6 +47,12 @@ export default function ClassesPage() {
         showHeading={false}
         offer={getOffer()}
         menus={classMenus.map(withPosters)}
+      />
+
+      <AskForMore
+        heading="Want a course we haven't listed?"
+        body="If none of the packages fit — you already know the basics, you only want one skill, or you need the timing to work around a job — tell us what you're after and we'll see what we can arrange."
+        tone="pink"
       />
     </>
   );

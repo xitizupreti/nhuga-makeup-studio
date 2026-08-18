@@ -1,25 +1,29 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import MenuSection, { type MenuWithPosters } from "@/components/MenuSection";
 import PageHeader from "@/components/PageHeader";
 import JsonLd from "@/components/JsonLd";
-import { WhatsAppButton } from "@/components/WhatsAppDialog";
+import AskForMore from "@/components/AskForMore";
 import { getMenuPosters } from "@/lib/assets";
 import { getOffer } from "@/lib/offer";
 import { breadcrumbSchema } from "@/lib/schema";
-import { serviceMenu, site, type Menu } from "@/config/site";
+import {
+  serviceMenus,
+  servicePolicies,
+  servicesIntro,
+  type Menu,
+} from "@/config/site";
 
 /** See the note in src/app/page.tsx — keeps the countdown and discount honest. */
 export const revalidate = 3600;
 
 const description =
-  "Bridal, engagement and party makeup, nail extension, lash and hair work at Nhuga Makeup Studio, Kalimati Chowk, Kathmandu — in the studio or at your venue.";
+  "Bridal, reception, mehendi and party makeup, groom makeup, nail extensions, lash extensions and beauty treatments at Nhuga Makeup Studio, Kalimati Chowk, Kathmandu. 50% off for 3 months from opening.";
 
 export const metadata: Metadata = {
-  title: "Services",
+  title: "Services & Prices",
   description,
   alternates: { canonical: "/services" },
-  openGraph: { title: "Services", description, url: "/services" },
+  openGraph: { title: "Services & Prices", description, url: "/services" },
 };
 
 function withPosters(menu: Menu): MenuWithPosters {
@@ -29,41 +33,51 @@ function withPosters(menu: Menu): MenuWithPosters {
 export default function ServicesPage() {
   return (
     <>
-      <JsonLd data={breadcrumbSchema("Services", "/services")} />
+      <JsonLd data={breadcrumbSchema("Services & Prices", "/services")} />
 
-      <PageHeader eyebrow="Book" title="Services" intro={serviceMenu.intro} />
+      <PageHeader
+        eyebrow="Book"
+        title="Services & Prices"
+        intro={servicesIntro}
+      />
 
       <MenuSection
         id="services"
         eyebrow="Book"
-        heading="Services"
-        intro={serviceMenu.intro}
+        heading="Price lists"
+        intro={servicesIntro}
         tone="light"
         showHeading={false}
         offer={getOffer()}
-        menus={[withPosters(serviceMenu)]}
+        menus={serviceMenus.map(withPosters)}
       />
 
       <section className="section bg-blush-50">
-        <div className="container-page rounded-3xl border border-blush-100 bg-white p-8 text-center sm:p-12">
-          <h2 className="heading">Not sure what you need?</h2>
-          <p className="mx-auto mt-4 max-w-lg leading-relaxed text-ink/70">
-            Tell us the occasion, the date and the venue, and we&apos;ll suggest
-            what fits — and confirm the price for exactly that.
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <WhatsAppButton className="btn-primary">
-              Ask on WhatsApp
-            </WhatsAppButton>
-            <Link href="/#booking" className="btn-secondary">
-              Use the booking form
-            </Link>
-          </div>
-          <p className="mt-6 text-xs text-ink/50">
-            {site.address.line1}, {site.address.line2}
-          </p>
+        <div className="container-page">
+          <h2 className="heading">Good to know</h2>
+          <dl className="mt-8 grid gap-6 sm:grid-cols-2">
+            {servicePolicies.map((policy) => (
+              <div
+                key={policy.title}
+                className="rounded-2xl border border-blush-100 bg-white p-6"
+              >
+                <dt className="font-serif text-xl text-blush-900">
+                  {policy.title}
+                </dt>
+                <dd className="mt-2 text-sm leading-relaxed text-ink/70">
+                  {policy.body}
+                </dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </section>
+
+      <AskForMore
+        heading="Need a service we haven't listed?"
+        body="These lists cover what we're asked for most often. If you want something else — a combined bridal package, a group booking, or a treatment not shown here — message us and we'll tell you what's possible and what it costs."
+        tone="light"
+      />
     </>
   );
 }

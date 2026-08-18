@@ -69,3 +69,219 @@
     @apply mb-1.5 block text-xs font-semibold uppercase tracking-wider text-blush-700;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   Opening splash — same structure as the IntroSplash in kshitizupreti.com.np
+   and standup, recoloured for the studio. Lives here rather than in Tailwind
+   utilities because the letter cascade needs per-element animation delays.
+--------------------------------------------------------------------------- */
+
+.intro-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 45%, #ffe8ef 0%, #fdd3e0 55%, #f7b9cd 100%);
+  transition:
+    opacity 400ms ease,
+    filter 400ms ease,
+    transform 400ms ease;
+}
+
+.intro-splash--leaving {
+  opacity: 0;
+  filter: blur(14px);
+  transform: scale(1.05);
+  pointer-events: none;
+}
+
+.intro-splash__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(224, 49, 109, 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(224, 49, 109, 0.09) 1px, transparent 1px);
+  background-size: 42px 42px;
+  opacity: 0.6;
+  animation: introGridDrift 9s linear infinite;
+  mask-image: radial-gradient(circle at 50% 45%, black 0%, transparent 75%);
+  -webkit-mask-image: radial-gradient(circle at 50% 45%, black 0%, transparent 75%);
+}
+
+.intro-splash__glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 50% 45%,
+    rgba(255, 255, 255, 0.75),
+    rgba(255, 255, 255, 0.25) 35%,
+    transparent 65%
+  );
+  animation: introBreathe 2.6s ease-in-out infinite;
+}
+
+.intro-splash__content {
+  /* Deliberately no z-index: that would make this a stacking context, and the
+     logo's mix-blend-multiply would then blend against transparency and keep
+     its white background. Paint order already puts it above the grid and glow,
+     since all three are positioned and DOM order decides. */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 24px;
+}
+
+.intro-splash__logo {
+  width: clamp(88px, 20vw, 132px);
+  height: auto;
+  /* The artwork sits on white; multiply drops it into the pink. */
+  mix-blend-mode: multiply;
+  opacity: 0;
+  transform: scale(0.72);
+  animation: introLogoIn 700ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.intro-splash__word {
+  position: relative;
+  margin-top: 18px;
+  display: inline-flex;
+  align-items: baseline;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(2.5rem, 9vw, 5rem);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #821d41;
+}
+
+.intro-splash__letter {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(10px);
+  filter: blur(6px);
+  animation: introLetterIn 420ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.intro-splash__letter--first {
+  position: relative;
+  opacity: 0;
+  transform: scale(0.5);
+  filter: blur(8px);
+  animation: introFirstLetterIn 520ms 120ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+/* "Makeup Studio", set smaller and lighter, as in the navbar wordmark. */
+.intro-splash__sub {
+  margin-left: 0.4em;
+  font-size: 0.42em;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #e0316d;
+  opacity: 0;
+  transform: translateY(8px);
+  animation: introTaglineIn 500ms 1150ms ease-out forwards;
+}
+
+.intro-splash__shine {
+  position: absolute;
+  top: -30%;
+  left: -60%;
+  width: 35%;
+  height: 160%;
+  background: linear-gradient(
+    115deg,
+    transparent,
+    rgba(255, 255, 255, 0.75),
+    transparent
+  );
+  transform: skewX(-20deg);
+  opacity: 0;
+  animation: introShineSweep 650ms 1450ms ease-in-out forwards;
+}
+
+.intro-splash__tagline {
+  margin-top: 16px;
+  opacity: 0;
+  transform: translateY(8px);
+  color: #bd1f56;
+  font-style: italic;
+  font-size: clamp(0.8rem, 1.8vw, 1rem);
+  letter-spacing: 0.22em;
+  animation: introTaglineIn 500ms 1500ms ease-out forwards;
+}
+
+@keyframes introGridDrift {
+  to {
+    background-position: 42px 42px;
+  }
+}
+
+@keyframes introBreathe {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes introLogoIn {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes introLetterIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes introFirstLetterIn {
+  to {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes introShineSweep {
+  0% {
+    opacity: 0;
+    left: -60%;
+  }
+  30% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    left: 130%;
+  }
+}
+
+@keyframes introTaglineIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-splash,
+  .intro-splash * {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
