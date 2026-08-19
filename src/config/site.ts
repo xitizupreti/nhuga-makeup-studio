@@ -109,7 +109,14 @@ export type MenuItem = {
   name: string;
   /** Course length, as printed on the poster. */
   duration?: string;
-  /** NPR, full price before any opening discount. Omit to show "Contact for pricing". */
+  /**
+   * NPR, FULL price before the opening discount. Omit to show "Contact for
+   * pricing".
+   *
+   * Note: the studio's printed posters show the ALREADY-DISCOUNTED figure, so
+   * every value here is double what the poster says. The 50% offer then brings
+   * it back to the poster price. Don't "correct" these to match the posters.
+   */
   price?: number;
   blurb?: string;
 };
@@ -138,19 +145,20 @@ export const servicePolicies = [
   },
 ];
 
-/** Transcribed from the studio's four service price lists. */
+/** Transcribed from the studio's four service price lists, at double the
+ *  printed figure — see the note on MenuItem.price. */
 export const serviceMenus: Menu[] = [
   {
     id: "services-bridal",
     title: "Bridal & Party",
     intro: "Makeup and hairstyle with sari draping, unless noted otherwise.",
     items: [
-      { name: "Bridal Makeup", price: 15000, blurb: "Makeup & hairstyle with sari draping." },
-      { name: "Reception Bride", price: 13000, blurb: "Makeup & hairstyle with sari draping." },
-      { name: "Engagement Bride", price: 10000, blurb: "Makeup & hairstyle with sari draping." },
-      { name: "Mehendi Bride", price: 10000, blurb: "Makeup & hairstyle with sari draping." },
-      { name: "Groom Makeup", price: 3000, blurb: "Makeup & hair styling." },
-      { name: "Normal Party Makeup", price: 3000, blurb: "Makeup & hairstyle with sari draping." },
+      { name: "Bridal Makeup", price: 30000, blurb: "Makeup & hairstyle with sari draping." },
+      { name: "Reception Bride", price: 26000, blurb: "Makeup & hairstyle with sari draping." },
+      { name: "Engagement Bride", price: 20000, blurb: "Makeup & hairstyle with sari draping." },
+      { name: "Mehendi Bride", price: 20000, blurb: "Makeup & hairstyle with sari draping." },
+      { name: "Groom Makeup", price: 6000, blurb: "Makeup & hair styling." },
+      { name: "Normal Party Makeup", price: 6000, blurb: "Makeup & hairstyle with sari draping." },
     ],
   },
   {
@@ -158,9 +166,9 @@ export const serviceMenus: Menu[] = [
     title: "Nail Extensions",
     intro: "Extensions and overlays, finished with the nail art you choose.",
     items: [
-      { name: "Overlay on both hands", price: 500 },
-      { name: "Gel Extension", price: 1500, blurb: "Final price depends on the art." },
-      { name: "Acrylic Extension", price: 2000, blurb: "Final price depends on the art." },
+      { name: "Overlay on both hands", price: 1000 },
+      { name: "Gel Extension", price: 3000, blurb: "Final price depends on the art." },
+      { name: "Acrylic Extension", price: 4000, blurb: "Final price depends on the art." },
     ],
   },
   {
@@ -168,11 +176,11 @@ export const serviceMenus: Menu[] = [
     title: "Lash Extensions",
     intro: "From a natural set through to mega volume, plus lash lifting.",
     items: [
-      { name: "Normal Lash Extension", price: 1000 },
-      { name: "Volume Lash Extension", price: 1500 },
-      { name: "Mega Volume Lash Extension", price: 2000 },
-      { name: "Hybrid Volume Lash Extension", price: 2500 },
-      { name: "Lash Lifting", price: 600 },
+      { name: "Normal Lash Extension", price: 2000 },
+      { name: "Volume Lash Extension", price: 3000 },
+      { name: "Mega Volume Lash Extension", price: 4000 },
+      { name: "Hybrid Volume Lash Extension", price: 5000 },
+      { name: "Lash Lifting", price: 1200 },
     ],
   },
   {
@@ -180,11 +188,11 @@ export const serviceMenus: Menu[] = [
     title: "Beauty & Grooming",
     intro: "Everyday treatments, on their own or alongside a makeup booking.",
     items: [
-      { name: "Facial", price: 1000 },
-      { name: "Normal Cleansing", price: 500 },
-      { name: "Waxing \u2014 Full Body", price: 1500 },
-      { name: "Underarms Waxing", price: 500 },
-      { name: "Hair Oil Massage", price: 500 },
+      { name: "Facial", price: 2000 },
+      { name: "Normal Cleansing", price: 1000 },
+      { name: "Waxing \u2014 Full Body", price: 3000 },
+      { name: "Underarms Waxing", price: 1000 },
+      { name: "Hair Oil Massage", price: 1000 },
     ],
   },
 ];
@@ -222,17 +230,18 @@ export const founder = {
 export const classesIntro =
   "Hands-on training in small batches. Take makeup or nails on their own, or a combined package covering makeup, nails and lashes together.";
 
-/** Transcribed from the studio's three class price lists. */
+/** Transcribed from the studio's three class price lists, at double the
+ *  printed figure — see the note on MenuItem.price. */
 export const classMenus: Menu[] = [
   {
     id: "classes-makeup",
     title: "Makeup",
     intro: "Makeup-only courses, from self-grooming through to masters level.",
     items: [
-      { name: "Self Makeup", duration: "5 days", price: 5000 },
-      { name: "Advance Makeup", duration: "15 days", price: 10000 },
-      { name: "Professional Makeup", duration: "30 days", price: 25000 },
-      { name: "Masters Makeup", duration: "2 months", price: 50000 },
+      { name: "Self Makeup", duration: "5 days", price: 10000 },
+      { name: "Advance Makeup", duration: "15 days", price: 20000 },
+      { name: "Professional Makeup", duration: "30 days", price: 50000 },
+      { name: "Masters Makeup", duration: "2 months", price: 100000 },
     ],
   },
   {
@@ -240,10 +249,10 @@ export const classMenus: Menu[] = [
     title: "Nails",
     intro: "Nail technician courses covering extensions, shaping and nail art.",
     items: [
-      { name: "Basic Nails", duration: "10 days", price: 5000 },
-      { name: "Advance Nails", duration: "20 days", price: 12000 },
-      { name: "Professional Nails", duration: "30 days", price: 20000 },
-      { name: "Masters Nails", duration: "50 days", price: 35000 },
+      { name: "Basic Nails", duration: "10 days", price: 10000 },
+      { name: "Advance Nails", duration: "20 days", price: 24000 },
+      { name: "Professional Nails", duration: "30 days", price: 40000 },
+      { name: "Masters Nails", duration: "50 days", price: 70000 },
     ],
   },
   {
@@ -252,24 +261,24 @@ export const classMenus: Menu[] = [
     intro:
       "Combined packages covering makeup, nails and lash work in one course.",
     items: [
-      { name: "Self Makeup", duration: "5 days", price: 5000 },
-      { name: "Basic Makeup & Nails", duration: "15 days", price: 10000 },
-      { name: "Advance Makeup & Nails", duration: "25 days", price: 20000 },
-      { name: "Professional Makeup & Nails", duration: "30 days", price: 25000 },
+      { name: "Self Makeup", duration: "5 days", price: 10000 },
+      { name: "Basic Makeup & Nails", duration: "15 days", price: 20000 },
+      { name: "Advance Makeup & Nails", duration: "25 days", price: 40000 },
+      { name: "Professional Makeup & Nails", duration: "30 days", price: 50000 },
       {
         name: "Makeup & Nails with Lash Lifting",
         duration: "45 days",
-        price: 30000,
+        price: 60000,
       },
       {
         name: "Makeup, Nails & Lashes Extension",
         duration: "2 months",
-        price: 35000,
+        price: 70000,
       },
       {
         name: "Makeup, Nails & Lashes Extension",
         duration: "3 months",
-        price: 50000,
+        price: 100000,
       },
     ],
   },
